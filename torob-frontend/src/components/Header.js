@@ -65,6 +65,14 @@ const Header = (props) => {
    }
    return result;
 }
+const navMobile = ()=>{
+    navigate('/mobiles');
+
+}
+const navLaptop = ()=>{
+    navigate('/laptops');
+
+}
 
   const handleSubmit = ()=>{
     //evnt.preventDefault();
@@ -149,13 +157,13 @@ const Header = (props) => {
                         <button type="button" className="btn btn-link" data-bs-toggle="modal" data-bs-target="#signIn">ورود</button>
                         <button type="button" className="btn btn-link" data-bs-toggle="modal" data-bs-target="#signUp">ثبت نام</button>
                     </div>
-                    <div>
-                        <span className="me-4">
+                    <div className='d-flex align-items-center'>
+                        <button className="btn btn-light" onClick={navMobile}>
                             موبایل و تبلت
-                        </span>
-                        <span className="me-4">
+                        </button>
+                        <button className="btn btn-light" onClick={navLaptop}>
                             لپ تاپ
-                        </span>
+                        </button>
                     </div>
                 </div>
             </div>
