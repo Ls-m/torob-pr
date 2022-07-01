@@ -1,8 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router';
 import { useState, useEffect } from 'react';
-
-
+import Header from '../components/Header';
 
 
 const Home = (props)=>{
@@ -15,9 +14,13 @@ const Home = (props)=>{
     
     return(
         <>
-        <div>
+        <Header></Header>
+        <div style={{backgroundColor:"#f2f3f5"}}>
             Home
+            <button type="button" className="btn btn-primary">Primary</button>
         </div>
+       
+        
         </>
         
         
