@@ -55,6 +55,8 @@ router.put('/:username',async function (req, res) {
     if(!user) return res.status(404).send("user not found!")
     var user2 =  allUsers.find((user) => user.token === newToken);
     if(user2) return res.status(404).send("this token is already taken!")
+
+    user.token = newToken;
    
     await User.updateOne({ _id: user._id }, user);
     return res.status(200).send(
