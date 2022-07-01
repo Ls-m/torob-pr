@@ -2,12 +2,23 @@ import React from 'react'
 import { useNavigate } from 'react-router';
 import { useState, useEffect } from 'react';
 import ShowAndHidePassword from './ShowAndHidePassword';
+import $ from 'jquery';
+import axios from 'axios';
+import Cookies from 'universal-cookie';
+
+//const answer = await axios.get('http://localhost:8080/api/users');
+
 
 
 const Header = (props) => {
+    
+    
     const [recent, setRecent] = useState([]);
     const [emailError, setEmailError] = useState("");
+    const [closeModal, setCloseModal] = useState("");
+    const [users, setUsers] = useState([]);
     let navigate = useNavigate();
+    
     const onClickHandler = () => {
         navigate('/search')
         console.log('clicked');
@@ -20,10 +31,46 @@ const Header = (props) => {
     console.log('value is:', event.target.value);
   };
 
+  const checkWithDb =async()=>{
+    //console.log("checking with db")
+    let answer = await axios.get('http://localhost:8080/api/users');
+    let allUsers = answer.data.users;
+    setUsers(allUsers);
+
+    
+  }
+  checkWithDb();
+
+  const updateTokenDb = async(username,token1)=>{
+    var Url = 'http://localhost:8080/api/users/'+username;
+    await axios.put(Url, {
+        token:token1,
+        
+    }).then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+  }
+
+  const tokenGenerator=(length)=> {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * 
+ charactersLength));
+   }
+   return result;
+}
+
   const handleSubmit = ()=>{
     //evnt.preventDefault();
     console.log('value after submit is:', message);
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    
      
     if(message===""){
         console.log("empty!");
@@ -31,16 +78,66 @@ const Header = (props) => {
         // setEmailError(()=>{
         //     emailError = "پر کردن این فیلد الزامی است."
         // })
+    } else {
+
+        if (regex.test(message)){
+            console.log("from rege "+message);
+            setEmailError("");
+            
+        }
+        else{
+            console.log("from else "+message);
+            setEmailError("ایمیل وارد شده معتبر نیست.")
+        }
+
     }
-    if (regex.test(message)){
-        console.log("from rege "+message);
-        setEmailError("");
+    
+
+    var passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    var passVal = $("#password-field").val();
+
+    if( passVal === "" ){
+        $("#password-field-err").text("پر کردن این فیلد الزامی ست.");
+    } else {
+
+        if( passRegex.test(passVal)){
+            $("#password-field-err").text("");
+        } else {
+            $("#password-field-err").text("پسورد می‌بایست شامل حداقل ۸ کاراکتر، یک حرف و یک عدد انگلیسی باشد.");
+        }
+
+    }
+
+    if($("#password-field-err").val() ==="" && emailError===""){
+        console.log("let's see...");
+        const user1 = users.find((user)=>(user.email===message && user.password ===passVal));
+            if(user1){
+                console.log("user found");
+                const token = tokenGenerator(16);
+                updateTokenDb(user1.username,token);
+                const cookies = new Cookies();
+                cookies.set('loginToken', token, { path: '/' });
+                if(user1.role=="customer")navigate('/customer');
+                else navigate('/seller');
+                setCloseModal("modal");
+
+
+            }else{
+                console.log("user not found");
+                $("#general-error-message").text("کاربری با مشخصات فوق پیدا نشد.");
+            }
         
+       
+        
+
+       
     }
-    else{
-        console.log("from else "+message);
-        setEmailError("ایمیل وارد شده معتبر نیست.")
-    }
+    
+
+    
+
+   
+    
   }
   
 
@@ -53,14 +150,11 @@ const Header = (props) => {
                         <button type="button" className="btn btn-link" data-bs-toggle="modal" data-bs-target="#signUp">ثبت نام</button>
                     </div>
                     <div>
-                        <span>
-                            t1
+                        <span className="me-4">
+                            موبایل و تبلت
                         </span>
-                        <span>
-                            t1
-                        </span>
-                        <span>
-                            t1
+                        <span className="me-4">
+                            لپ تاپ
                         </span>
                     </div>
                 </div>
@@ -82,10 +176,11 @@ const Header = (props) => {
                                     <input type="email" className="form-control" id="email" placeholder="name@example.com" onChange={handleChange}/>
                                     <p style={{color:"red"}} id="emailText">{emailError}</p>
                                 </div>
-                                <ShowAndHidePassword />
+                                <ShowAndHidePassword/>
+                                <p style={{color:"red"}} id="general-error-message"></p>
                                 
                             </form>
-                            <button id="hhjjk" className="btn btn-primary mb-3" onClick={handleSubmit}>ورود</button>
+                            <button id="hhjjk" className="btn btn-primary mb-3 " data-bs-dismiss={closeModal} onClick={handleSubmit}>ورود</button>
 
                         </div>
                         <div className="modal-footer">
