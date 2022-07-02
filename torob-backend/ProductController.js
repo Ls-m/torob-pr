@@ -38,6 +38,7 @@ router.get('',async function (req, res) {
         size:allProducts.length,
         
         products:allProducts.map((product)=>({
+            id:product.id,
             name:product.name,
             img:product.img,
             categoryId:product.categoryId,

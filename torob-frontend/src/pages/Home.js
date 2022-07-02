@@ -2,16 +2,70 @@ import React from 'react'
 import { useNavigate } from 'react-router';
 import { useState, useEffect } from 'react';
 import Header from '../components/Header';
-
+import $ from 'jquery';
+import axios from 'axios';
 
 const Home = (props)=>{
-    const [recent, setRecent] = useState([]);
+    const [message, setMessage] = useState('');
     let navigate = useNavigate();
     const onClickHandler=()=>{
         navigate('/search')
         console.log('clicked');
     }
     
+    const [products, setProducts] = useState([]);
+    const getProducts =async()=>{
+        //console.log("checking with db")
+        let answer = await axios.get('http://localhost:8080/api/products');
+        let allProducts = answer.data.products;
+        setProducts(allProducts);
+        //console.log(allProducts);
+    
+        
+      }
+      getProducts();
+
+    const handleKeyDown = event => {
+        //console.log(event.key);
+    
+        if (event.key === 'Enter') {
+          event.preventDefault();
+    
+          // 👇️ access input value from state
+          console.log("pressed");
+          console.log(message);
+
+          const searchedProduct = products.find((product)=>product.name===message);
+          if(searchedProduct){
+            console.log("product found"+searchedProduct.id);
+            let Url = '/products/'+searchedProduct.id;
+            navigate(Url);
+          }else{
+            console.log("product not found");
+            let Url = '/notFound';
+            navigate(Url);
+          }
+
+        //   if(message==="لپ تاپ"){
+        //     navigate('/laptops');
+        //     console.log("laptop")
+
+        //   }else if(message==="موبایل"){
+        //     navigate('/mobiles');
+        //     console.log("mobile");
+
+        //   }else{
+            
+
+        //   }
+
+        }
+      };
+
+      
+
+
+      
     return(
         <>
         <Header></Header>
@@ -28,7 +82,7 @@ const Home = (props)=>{
             
            
             <div className='mt-4'>
-                <input className='mt-4' style={{width:"100%"}} placeholder="نام کالا را وارد کنید"></input>
+                <input onChange={event => setMessage(event.target.value)} onKeyDown={handleKeyDown} id="textbox" className='mt-4' style={{width:"100%"}} placeholder="نام کالا را وارد کنید"></input>
             </div>
         </div>
        

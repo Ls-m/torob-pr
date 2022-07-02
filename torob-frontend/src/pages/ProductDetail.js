@@ -1,28 +1,41 @@
 import React from 'react';
 import { useParams } from "react-router";
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import axios from 'axios';
 const ProductDetail = () => {
     const { id } = useParams();
     const [product, setProduct] = useState([]);
+    const [minPrice,setMinPrice] = useState(100);
+    const [maxPrice,setMaxPrice] = useState(0);
+    const [price,setPrice]=useState("");
+    //let navigate = useNavigate();
+   // console.log(id);
 
 
-    const getProducts =async()=>{
+    const getProduct =async()=>{
         //console.log("checking with db")
         let answer = await axios.get('http://localhost:8080/api/products');
         let allProducts = answer.data.products;
-        const p = allProducts.find((p)=>p.id=={id})
+        const p = allProducts.find((p)=>p.id==id)
         setProduct(p);
-        console.log(p);
+        //console.log(p.price);
+
+        product.shopPrice.forEach((p) => {
+            if(p.price>maxPrice) setMaxPrice(p.price)
+            if(p.price<minPrice) setMinPrice(p.price);
+        });
+        let tmp = ''+minPrice;
+        //console.log(tmp)
+        if(maxPrice!== minPrice) tmp = minPrice+"-"+maxPrice;
+        setPrice(tmp);
+    
+    
     
         
     }
-      getProducts();
-
-
-
-    // let myData = Data.data;
-    // const a = myData[id];
+    
+    getProduct();
+   
    
 
     return (
@@ -38,10 +51,10 @@ const ProductDetail = () => {
                         <h2>{product.name}</h2>
                     </div>
                     <div>
-                        <h2>R$ {product.price}</h2>
+                        <h2>R$ {price}</h2>
                     </div>
-                    <button className="btn btn-success mt-2" type="button">Buy Now</button>
-                    <button className="btn btn-primary mt-2" type="button">More Info</button>
+                    <button className="btn btn-success mt-2" type="button">خرید</button>
+                    <button className="btn btn-primary mt-2" type="button">اطلاعات بیشتر</button>
 
                 </div>
             </div>
