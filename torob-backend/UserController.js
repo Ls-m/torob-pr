@@ -69,6 +69,30 @@ router.put('/:username',async function (req, res) {
     );
 
 });
+router.put('/updateFav/:username',async function (req, res) {
+
+
+  const username = req.params.username;
+  const newFav = req.body.favorite;
+  const allUsers = await User.find({});
+  var user =  allUsers.find((user) => user.username === username);
+  if(!user) return res.status(404).send("user not found!")
+  const foundFav = user.favorites.find((f)=>f==newFav);
+  if(foundFav){
+    return res.status(404).send("this product is already taken!")
+  }
+
+  user.favorites.push(newFav)
+ 
+  await User.updateOne({ _id: user._id }, user);
+  return res.status(200).send(
+    {
+     
+      message:"user favorite added successfully!",
+    }
+  );
+
+});
 router.delete('/:username',async function (req, res) {
     
     const username = req.params.username;

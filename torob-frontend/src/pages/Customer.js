@@ -107,22 +107,10 @@ const Customer = (props)=>{
                 }
               }
         
-        // u.favorites.forEach((f)=>{
-        //     allProducts.forEach((p)=>{
-        //         if(f==parseInt(p.id)){
-        //             let t = [];
-        //             t.push(p);
-        //             setRes(t);
-        //         }
-        //         //setRes(p);
-        //     })
-        // })
+ 
 
         console.log(res);
 
-        // setProducts(allProducts);
-        // console.log(products);
-        // favPro();
        
     })();
   }, []);
@@ -139,7 +127,7 @@ const Customer = (props)=>{
         </div> */}
         
 
-        <div className="container pt-5" style={{backgroundColor:"#f2f3f5"}}>
+        <div className="container pt-5" >
             <div>کالاهای مورد علاقه</div>
             <div className="row gx-5">
             {
@@ -147,7 +135,7 @@ const Customer = (props)=>{
                     (item) => {
                         
                        
-                         return(<ProductCard value={item}/>);
+                         return(<ProductCard value={item} note={"no"}/>);
                        // return(<div>{item.name}</div>)
                     }
 
