@@ -15,6 +15,7 @@ const ProductCard = (props) =>{
                     <img src={a.img} />
                 </div>
                 <div style={{"minHeight":"70px"}}>
+                    
                     <Link to={`/products/${a.id}`} className='text-decoration-none text-dark'>
                         <h6>{a.name}</h6>
                     </Link>
