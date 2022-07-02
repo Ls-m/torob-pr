@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const ProductCard = (props) =>{
     const a = props.value;
+    //console.log(a.id);
     //const dispatch = useDispatch();
     return(
         <>
@@ -14,11 +15,12 @@ const ProductCard = (props) =>{
                 <div className='text-center' style={{"margin": "0 auto", "width": "80%"}}>
                     <img src={a.img} />
                 </div>
-                <div style={{"minHeight":"70px"}}>
+                <div className='d-flex justify-content-between align-items-center' style={{"minHeight":"70px"}}>
                     
                     <Link to={`/products/${a.id}`} className='text-decoration-none text-dark'>
                         <h6>{a.name}</h6>
                     </Link>
+                    <button className="btn btn-outline-danger" type="button" >افزودن به علاقه‌مندی</button>
                     {/* <a href="../pages/Product/" className='text-decoration-none text-dark'>
                         <h6>{a.title}</h6>
                     </a> */}
@@ -31,9 +33,11 @@ const ProductCard = (props) =>{
                     <div>
                         {a.size}
                     </div>
+                    
               
                 </div>
                 <button className="btn btn-success mt-2" type="button" >خرید</button>
+                
                 {/* onClick={() => dispatch(add(a))}
                  */}
                 

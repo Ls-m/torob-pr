@@ -18,6 +18,7 @@ router.post('',async function (req, res) {
     email:email,
     role:role,
     token:'',
+    favorites:[2,3,4],
 }
 const saveRes = await new User(newUser).save(); 
 res.status(200).send({message:"User Saved!"});
@@ -35,6 +36,7 @@ router.get('',async function (req, res) {
             email:user.email,
             role:user.role,
             token:user.token,
+            favorites:user.favorites,
             
         })),
 

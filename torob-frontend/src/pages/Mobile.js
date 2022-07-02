@@ -14,7 +14,7 @@ const Mobile = (props)=>{
         let answer = await axios.get('http://localhost:8080/api/products');
         let allProducts = answer.data.products;
         setProducts(allProducts);
-        console.log(allProducts);
+        //console.log(allProducts);
     
         
       }

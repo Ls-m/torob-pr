@@ -11,6 +11,7 @@ import Seller from "./pages/Seller";
 import Mobile from "./pages/Mobile";
 import Laptop from "./pages/Laptop";
 import ProductDetail from "./pages/ProductDetail";
+import NotFound from "./pages/NotFound";
 
   
 function App() {
@@ -24,6 +25,7 @@ function App() {
       <Route path="/mobiles" element={<Mobile/>}/>
       <Route path="/laptops" element={<Laptop/>}/>
       <Route path='/products/:id' element={<ProductDetail/>}/>
+      <Route path="/notFound" element={<NotFound/>}/>
     </Routes>
   </BrowserRouter>
   );

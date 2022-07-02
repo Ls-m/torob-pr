@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
     email:String,
     role:String,
     token:String,
+    favorites:[Number],
 
 });
 
