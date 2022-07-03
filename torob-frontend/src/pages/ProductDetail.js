@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from "react-router";
 import { useState,useEffect } from 'react';
 import axios from 'axios';
+import Header from '../components/Header';
 const ProductDetail = () => {
     const { id } = useParams();
     const [product, setProduct] = useState([]);
@@ -41,6 +42,7 @@ const ProductDetail = () => {
     return (
         // <div>{id}</div>
         <>
+            <Header></Header>
         
             <div className='d-flex m-4 p-4' style={{ "backgroundColor": "white" }}>
                 <div className='col-3'>
